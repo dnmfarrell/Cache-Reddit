@@ -46,11 +46,11 @@ It requires three environment variables to be set:
 
 =over 4
 
-=item reddit_username - the reddit username to login with
+=item * reddit_username - the reddit username to login with
 
-=item reddit_password - the reddit password to login with
+=item * reddit_password - the reddit password to login with
 
-=item reddit_subreddit - the target subreddit to post data to
+=item * reddit_subreddit - the target subreddit to post data to
 
 =back
 

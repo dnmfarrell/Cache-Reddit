@@ -8,7 +8,7 @@ Cache::Reddit - a caching API that uses Reddit as the backend
 
 =head1 VERSION
 
-version 0.01
+version 0.02
 
 =head1 SYNOPSIS
 
@@ -32,11 +32,11 @@ It requires three environment variables to be set:
 
 =over 4
 
-=item reddit_username - the reddit username to login with
+=item * reddit_username - the reddit username to login with
 
-=item reddit_password - the reddit password to login with
+=item * reddit_password - the reddit password to login with
 
-=item reddit_subreddit - the target subreddit to post data to
+=item * reddit_subreddit - the target subreddit to post data to
 
 =back
 
