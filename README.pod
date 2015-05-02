@@ -1,0 +1,70 @@
+=pod
+
+=encoding UTF-8
+
+=head1 NAME
+
+Cache::Reddit - a caching API that uses Reddit as the backend
+
+=head1 VERSION
+
+version 0.01
+
+=head1 SYNOPSIS
+
+  use Cache::Reddit;
+
+  my $id = set($data_ref);  # serialize data and post to subreddit
+  my $data = get($id);      # retrieve the data back
+  remove($id);              # delete the data from Reddit
+
+=head1 DESCRIPTION
+
+Cache::Reddit is a module for cacheing your application data on Reddit.
+Data is serialized using L<Storable> and posted to a subreddit. The data
+is posted as a text post, and the title of the post set to Cache::Reddit::
++ a random number.
+
+Due to the list-like search function, data retrieval performs at 0(n). However
+deletion and insertion performs at 0(1).
+
+It requires three environment variables to be set:
+
+=over 4
+
+=item reddit_username - the reddit username to login with
+
+=item reddit_password - the reddit password to login with
+
+=item reddit_subreddit - the target subreddit to post data to
+
+=back
+
+=head1 EXPORTED FUNCTIONS
+
+=head2 set($dataref)
+
+Serializes and saves the data in the subreddit as a text post.
+Returns the key for cached entry;
+
+=head2 get ($key)
+
+Deserializes and returns the cached entry.
+
+=head2 remove ($key)
+
+Deletes the item from the subreddit.
+
+=head1 AUTHOR
+
+David Farrell <dfarrell@cpan.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is Copyright (c) 2015 by David Farrell.
+
+This is free software, licensed under:
+
+  The (two-clause) FreeBSD License
+
+=cut
