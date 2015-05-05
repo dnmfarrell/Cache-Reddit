@@ -104,7 +104,7 @@ sub get
 
   my $data;
 
-  for my $link ( @{$reddit->fetch_links(subreddit => 'cache_reddit')->{items}} )
+  for my $link ( @{$reddit->fetch_links(subreddit => $ENV{reddit_subreddit})->{items}} )
   {
     if ($link->{name} eq $key)
     {
