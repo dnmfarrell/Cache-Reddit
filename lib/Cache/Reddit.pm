@@ -1,6 +1,7 @@
 use strict;
 use warnings;
 package Cache::Reddit;
+use Cache::Reddit::Bleach;
 
 #ABSTRACT: a caching API that uses Reddit as the backend
 
@@ -9,6 +10,8 @@ our @ISA = qw/Exporter/;
 our @EXPORT = qw/get set remove/;
 use Reddit::Client;
 
+die 'Cache::Reddit requires the following environment variables: reddit_username, reddit_password and reddit_subreddit'
+  unless $ENV{reddit_username} && $ENV{reddit_password} && $ENV{reddit_subreddit};
 
 my $session_file = '~/.reddit';
 my $reddit       = Reddit::Client->new(
@@ -24,8 +27,6 @@ sub deserialize { Storable::thaw($_[0]) }
 
 sub authenticate
 {
-  die 'Cache::Reddit requires the following environment variables: reddit_username, reddit_password and reddit_subreddit'
-    unless $ENV{reddit_username} && $ENV{reddit_password} && $ENV{reddit_subreddit};
   unless ($reddit->is_logged_in) {
       $reddit->login($ENV{reddit_username}, $ENV{reddit_password});
       $reddit->save_session();
@@ -38,6 +39,9 @@ Cache::Reddit is a module for cacheing your application data on Reddit.
 Data is serialized using L<Storable> and posted to a subreddit. The data
 is posted as a text post, and the title of the post set to Cache::Reddit::
 + a random number.
+
+The text is bleached before posting (converted to binary, C<tr/01/ \t/g>)
+so it appears as whitespace on Reddit.
 
 Due to the list-like search function, data retrieval performs at 0(n). However
 deletion and insertion performs at 0(1).
@@ -80,11 +84,12 @@ sub set
   authenticate();
 
   my $data = serialize($value);
+  my $bleached_data = Cache::Reddit::Bleach::wash($data);
 
   $reddit->submit_text(
       subreddit => $ENV{reddit_subreddit},
       title     => 'Cache::Reddit::' . (int rand 100000),
-      text      => $data,
+      text      => $bleached_data,
   );
 }
 
@@ -112,7 +117,7 @@ sub get
       last;
     }
   }
-  deserialize($data) if $data;
+  deserialize(Cache::Reddit::Bleach::dry($data)) if $data;
 }
 
 =head2 remove ($key)

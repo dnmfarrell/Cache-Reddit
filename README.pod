@@ -8,7 +8,7 @@ Cache::Reddit - a caching API that uses Reddit as the backend
 
 =head1 VERSION
 
-version 0.03
+version 0.04
 
 =head1 SYNOPSIS
 
@@ -24,6 +24,9 @@ Cache::Reddit is a module for cacheing your application data on Reddit.
 Data is serialized using L<Storable> and posted to a subreddit. The data
 is posted as a text post, and the title of the post set to Cache::Reddit::
 + a random number.
+
+The text is bleached before posting (converted to binary, C<tr/01/ \t/g>)
+so it appears as whitespace on Reddit.
 
 Due to the list-like search function, data retrieval performs at 0(n). However
 deletion and insertion performs at 0(1).
